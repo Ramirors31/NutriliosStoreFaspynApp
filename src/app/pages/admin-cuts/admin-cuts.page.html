@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Cortes administrativos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6">
+          <ion-text>
+            <h3>
+              {{getTodaysDate()}}
+            </h3>
+          </ion-text>
+          <div style="display: flex; flex-direction:row">
+            <ion-text style="flex-basis: 50%;" color="danger">
+              <h5>Corte pendiente</h5>
+            </ion-text>
+            <ion-button style="margin-left: auto;">
+              Generar corte diario
+            </ion-button>
+          </div>
+      </ion-col>
+      <ion-col size="6">
+        <div style="display:flex; flex-direction: row; justify-content: center; align-items: center; width: 100%; padding: 10px 0px 0px 0px;" >
+          <ion-fab-button (click)="goBackWeek()">
+            <ion-icon name="chevron-back"></ion-icon>
+          </ion-fab-button>
+          <ion-text style="margin: 0px 20px 0px 20px;">
+            <h3>
+              {{displaySelectedDateMonth()}}
+            </h3>
+          </ion-text>
+          <ion-fab-button (click)="goForwardWeek()" [disabled]="selectedWeek.formatDate === liveWeek.formatDate">
+            <ion-icon name="chevron-forward"></ion-icon>
+          </ion-fab-button>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="6">
+        <h1>Aqui ira el corte seleccionado, predeterminadamente si no hay corte seleccionado se muestra el corte del dia de hoy</h1>
+      </ion-col>
+      <ion-col size="6">
+        <app-calendar [selectedWeek]="selectedWeek" [actualDate]="todayIs()" (calendarModeSwapEvent)="calendarModeSwap($event)">
+        </app-calendar>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

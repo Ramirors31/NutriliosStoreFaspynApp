@@ -1,0 +1,36 @@
+  <ion-grid id="weekGrid">
+    <ion-row>
+      <ion-col size="7">
+        <div style="display: flex; flex-direction:row; justify-content: flex-end; align-items:flex-end">
+          <ion-item>
+            <ion-select [(ngModel)]="selectedCalendarMode" (ngModelChange)="calendarModeSwap()">
+              <ion-select-option value="weeklyView">
+                Por semana
+              </ion-select-option>
+              <ion-select-option value="monthlyView">
+                Por mes
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col style="background-color: var(--ion-color-primary-tint)" *ngFor="let dayOfTheWeek of calendarService.daysOfTheWeek" size="1">
+        <ion-item style="text-align: center;">
+          <ion-label>
+            {{dayOfTheWeek}}
+          </ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="1" *ngFor="let calendarDay of showingCalendarDays">
+        <div class="calendarDay">
+          <ion-item>
+            <ion-label style="margin: 0;" slot="end"> {{calendarDay.day}}</ion-label>
+          </ion-item>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>

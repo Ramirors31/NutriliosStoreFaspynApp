@@ -7,10 +7,14 @@ const routes: Routes = [
     redirectTo: 'folder/Inbox',
     pathMatch: 'full'
   },
+  // {
+  //   path: 'folder/:id',
+  //   loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule)
+  // },
   {
-    path: 'folder/:id',
-    loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule)
-  }
+    path: 'cortes-administrativos',
+    loadChildren: () => import('./pages/admin-cuts/admin-cuts.module').then(m => m.AdminCutsPageModule)
+  },
 ];
 
 @NgModule({
