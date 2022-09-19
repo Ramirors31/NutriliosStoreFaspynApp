@@ -15,6 +15,14 @@ const routes: Routes = [
     path: 'cortes-administrativos',
     loadChildren: () => import('./pages/admin-cuts/admin-cuts.module').then(m => m.AdminCutsPageModule)
   },
+  {
+    path: 'inventario-actual',
+    loadChildren: () => import('./pages/inventario-actual/inventario-actual.module').then( m => m.InventarioActualPageModule),
+  },
+  {
+    path: 'punto-de-venta',
+    loadChildren: () => import('./pages/punto-de-venta/punto-de-venta.module').then( m => m.PuntoDeVentaPageModule)
+  },
 ];
 
 @NgModule({

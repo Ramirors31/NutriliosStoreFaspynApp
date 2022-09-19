@@ -1,0 +1,85 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Inventario</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+    <div class="searchMenuInventario">
+      <ion-input 
+        type="text"
+        [(ngModel)]="filterItems" 
+        class="form-control" 
+        name="filterItems" 
+        placeholder="Buscar un producto"
+      ></ion-input>
+      <ng-container>
+        <ion-icon (click)="searchProduct()" name="search"></ion-icon>
+      </ng-container>    
+      <ion-button
+       (click)="openProductRegisterModal('newItem')">
+        Agregar producto nuevo 
+      </ion-button>
+    </div>
+    <div class="inventaryTableContainer">
+      <table>
+        <tr>
+          <td 
+            class="tableHeaders" 
+            *ngFor="let tableHeader of inventaryTableHeaders"
+            >
+            {{tableHeader}}
+          </td>
+        </tr>
+        <tr 
+          *ngFor="let item of registeredProducts">
+          <td>
+            {{item.product_id}}
+          </td>
+          <td>
+            {{item.product_name}}
+          </td>
+          <td>
+            {{item.product_description}}
+          </td>
+          <td>
+            {{item.product_category}}
+          </td>
+          <td>
+            {{item.product_stock}}
+          </td>
+          <td>
+            ${{item.product_adquisitionprice}}
+          </td>
+          <td>
+            ${{item.product_sellingprice}}
+          </td>
+          <td>
+            <ng-container>
+              <ion-icon name="create" (click)="openProductRegisterModal('editItem', item)"></ion-icon>
+            </ng-container>
+            <ng-container>
+              <ion-icon name="trash" (click)="deleteItem(item.productName)"></ion-icon>
+            </ng-container>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <!-- <edit-register-product-modal 
+      (closeProductModal)="closeModal($event)"
+      (saveNewProduct)="saveProductMock($event)"
+      [itemToEdit]="seletecItemToEdit"
+      *ngIf="showEditRegisterModal" >
+    </edit-register-product-modal>
+    <product-entrys-modal
+      *ngIf="showProductEntriesModal"
+      (closeIncomingsModal)="closeIncomingsModal($event)"
+      [registeredProducts]="mockInventaryData">
+    </product-entrys-modal> -->
+<!-- </ion-content>
+<ion-fab style="display: block; margin-top: 500px; margin-left: 1100px;">
+  <button ion-fab (click)="displayProductEntriesModal()">
+  </button>
+</ion-fab> -->

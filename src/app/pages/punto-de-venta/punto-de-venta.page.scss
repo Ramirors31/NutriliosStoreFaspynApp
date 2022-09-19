@@ -1,0 +1,129 @@
+.generalContainer{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+ion-input{
+    margin: 0;
+}
+.productSearchAndTabContainer{
+    display: flex;
+    flex-basis: 50%;
+    flex-direction: column;
+    padding: 10px;
+    ion-input{
+        max-height: 30px;
+        input{
+            margin: 0px 10px 0px 10px;
+        }
+    }
+    .addProductTable{
+    margin: 20px 0px 10px 0px;
+    width: 100%;
+        .headers{
+            font-weight: 900;
+        }
+        .headers:nth-child(3n){
+            min-width: 20%;
+            max-width: 20%;
+        }
+
+    }
+
+    h3{
+        align-self: center;
+    }
+
+}
+
+.form-control{
+    border-bottom: 1px solid gray;
+    padding: 5px;
+    max-width: 400px;
+    text-align: center;
+    ion-input{
+        margin: 0;
+    }
+
+}
+
+.ticketDeCompra {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .ticketImage{
+        height: 120px;
+        width: 120px;
+    }
+    .ticketContentTable {
+        text-align: center;
+        thead{
+            border-top: thick black;
+            border-bottom: thick black;
+            th{
+                margin: 0;
+            }
+            th:last-child{
+                margin: 0px 0px 10px 0px;
+            }
+        }
+    }
+
+}
+
+.productsListContainer{
+    padding: 10px;
+    display: flex;
+    flex-basis: 50%;
+    flex-direction: column;
+    align-items: center;
+}
+
+.basicTable{
+    min-width: 100%;
+    max-width: 100%;
+    border: 2px solid black;
+    margin-bottom: 10px;
+    .tableHeaders{
+        margin-left: 10px;
+        margin-right: 10px;
+        background-color: #32db64;
+        color: white
+    }
+    td{
+        padding: 5px;
+        text-align: center;
+    }
+    tr:nth-child(even){
+        background-color: #cacaca;
+
+    }
+}
+
+.changeAndTotalContainer{
+    width: 80%;
+    margin: inherit;
+    align-self: flex-end;
+    font-size: 1.4em;
+    // td{
+    //     padding: 10px;
+    // }
+    ion-select{
+        width: 100%;
+        margin: 0;
+        padding: 0px 5px 0px 0px;
+    }
+    ion-input{
+        border: 1px solid gray;
+        border-radius: 10px;
+        height: 30px;
+        margin: 0;
+        input{
+            margin:0px 0px 0px 5px;
+        }
+    }
+}

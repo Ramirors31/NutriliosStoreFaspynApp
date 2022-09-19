@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { AdminCutsPageRoutingModule } from './admin-cuts-routing.module';
 
 import { AdminCutsPage } from './admin-cuts.page';
-import { CalendarComponent } from 'src/components/calendar/calendar.component';
+import { CalendarComponent } from 'src/app/components/calendar/calendar.component';
 
 @NgModule({
   imports: [

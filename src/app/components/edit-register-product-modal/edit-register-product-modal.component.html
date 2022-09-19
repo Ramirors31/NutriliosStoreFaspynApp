@@ -1,0 +1,54 @@
+  <div style="display: flex; flex-direction:row; width:100%; justify-content: flex-end;">
+    <ion-button style="color: #f53d3d; font-size: 1.2em"(click)="closeModal()">
+      Cancelar
+    </ion-button>
+  </div>
+  <ion-title style="text-align:center">{{itemToEdit ? 'Editar producto' : 'Registrar producto nuevo'}}</ion-title>
+  <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-input [(ngModel)]="productName" type="text" placeholder="Nombre del producto"></ion-input>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-input [(ngModel)]="productDescription" type="text" placeholder="Descripción"></ion-input>
+          </ion-col>
+        </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-select [(ngModel)]="productCategogy"  placeholder="Categoría">
+            <ion-option *ngFor="let productCategory of productCategories" [value]="productCategory">
+              {{productCategory}}
+            </ion-option>
+          </ion-select>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-input [(ngModel)]="productInitialStock"  placeholder="Stock inicial" type="numeric">
+          </ion-input>
+        </ion-col>
+        <ion-col *ngIf="!itemToEdit">
+          <ion-input [(ngModel)]="productMinimunRequired"  placeholder="Mínimo requerido" type="numeric">
+          </ion-input>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-input [(ngModel)]="productPurchasePrice" placeholder="Precio compra" type="numeric">
+          </ion-input>
+        </ion-col>
+        <ion-col>
+          <ion-input [(ngModel)]="productSalePrice"  placeholder="Precio venta" type="numeric">
+          </ion-input>
+        </ion-col>
+      </ion-row>
+      <ion-row style="text-align: center;">
+        <ion-col>
+          <ion-button (click)="itemToEdit ? editProduct() :  saveProduct()" [disabled]="!productName || !productCategogy || !productDescription || !productInitialStock || !productSalePrice || !productPurchasePrice"> 
+          {{itemToEdit ? 'Guardar cambios' : 'Registrar producto'}}
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>

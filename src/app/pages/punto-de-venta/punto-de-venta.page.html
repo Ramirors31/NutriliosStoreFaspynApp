@@ -1,0 +1,177 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Punto de venta</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="generalContainer">
+    <div class="productSearchAndTabContainer">
+      <h3>Venta</h3>
+      <div style="display:flex; flex-direction:row;">
+        <ion-input 
+          [(ngModel)]="filterItems"
+          class="form-control"
+          type="text"
+        >
+        </ion-input>
+        <ion-icon name="search"></ion-icon>
+      </div>
+      <table class="addProductTable" *ngIf="selectedItem.productName">
+        <tr>
+          <td class="headers" *ngFor="let header of addProductTableHeaders">
+            {{header}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            {{selectedItem.productName}}
+          </td>
+          <td>
+            {{selectedItem.productCode}}
+          </td>
+          <td>
+            <ion-input style="margin: 0;"  placeholer="Cantidad" [(ngModel)]="selectedItemUnits" type="numeric">
+            </ion-input>
+          </td>
+          <td>
+            <ion-button [disabled]="!selectedItemUnits" (click)="addProductToSale(selectedItem)">
+              Agregar
+            </ion-button>
+          </td>
+        </tr>
+      </table>
+      <table class="basicTable" *ngIf="itemsIncludedInSale.length">
+        <tr>
+          <td class="tableHeaders" *ngFor="let tableHeader of saleTableHeaders">
+            {{tableHeader}}
+          </td>
+        </tr>
+        <tr *ngFor="let saleItem of itemsIncludedInSale">
+          <td>
+            {{saleItem.productName}}
+          </td>
+          <td>
+            {{saleItem.unites}}
+          </td>
+          <td>
+            ${{saleItem.sellingPrice}}
+          </td>
+          <td>
+            ${{saleItem.subtotal}}
+          </td>
+          <td>
+            <ng-container>
+              <ion-icon name="trash" (click)="deleteItemFromSale(saleItem.productName)" color="danger"></ion-icon>
+            </ng-container>
+          </td>
+        </tr>
+      </table>
+      <ion-grid class="changeAndTotalContainer" *ngIf="itemsIncludedInSale.length">
+        <ion-row>
+          <ion-col class="importante">
+            Total            
+          </ion-col>
+          <ion-col>
+            ${{saleTotal()}}
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            Recibo
+          </ion-col>
+          <ion-col>
+            <ion-input [(ngModel)]="cashReceivment">
+
+            </ion-input>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>Cambio</ion-col>
+          <ion-col>${{getCashback()}}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>Tipo venta</ion-col>
+          <ion-col>
+            <ion-select [placeholder]="selectedSaleOption" [(ngModel)]="selectedSaleOption">
+              <ion-option *ngFor="let option of saleOptions" [value]="option">
+                {{option}}
+              </ion-option>
+            </ion-select>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <ion-button (click)="completeSale()" style="width: 100%;" *ngIf="itemsIncludedInSale.length" [disabled]="(!cashReceivment||cashReceivment < saleTotal()) && selectedSaleOption==='Venta'">
+        Completar venta
+      </ion-button>
+    </div>
+    <div class="productsListContainer">
+      <h3>
+        Productos disponibles
+      </h3>
+      <table class="basicTable">
+        <tr>
+          <td 
+            class="tableHeaders" 
+            *ngFor="let tableHeader of inventaryTableHeaders"
+            >
+            {{tableHeader}}
+          </td>
+        </tr>
+        <tr 
+          *ngFor="let item of mockInventaryData">
+          <td>
+            {{item.productCode}}
+          </td>
+          <td>
+            {{item.productName}}
+          </td>
+          <td>
+            ${{item.sellingPrice}}
+          </td>
+          <td>
+            <ng-container>
+              <ion-icon name="checkmark-circle-outline" color="primary" (click)="selectProduct(item)"></ion-icon>
+            </ng-container>
+          </td>
+        </tr>
+      </table>
+      <div *ngIf="saleCompleted" class="ticketDeCompra">
+        <img src="../../assets/imgs/logo-generico.webp" class="ticketImage">
+        <h5 style="margin: 0;">TICKET DE VENTA</h5>
+        <h5 style="margin: 0;">Nutrilios Store FASPYN UANL</h5>
+        <h5 style="margin: 0px 0px 10px 0px;">{{saleCompleted.saleDate}}  {{saleCompleted.saleHour}}</h5>
+        <table class="ticketContentTable">
+          <thead>
+            <th> PRODUCTO </th>
+            <th> CANT</th>
+            <th> $$</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let saleItem of saleCompleted.items">
+              <td>
+                {{saleItem.productName}}
+              </td>
+              <td>
+                {{saleItem.unites}}
+              </td>
+              <td>
+                {{saleItem.subtotal}}
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td style="font-weight: bolder;">Total</td>
+              <td style="font-weight: bolder;"> ${{saleCompleted.total}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <h5> Gracias por su compra!!</h5>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
