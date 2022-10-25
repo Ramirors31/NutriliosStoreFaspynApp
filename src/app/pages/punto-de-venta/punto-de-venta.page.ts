@@ -1,108 +1,32 @@
 import { Component, OnInit } from '@angular/core';
+import { POSService } from 'src/services/pos.service';
 
 @Component({
   selector: 'app-punto-de-venta',
   templateUrl: './punto-de-venta.page.html',
   styleUrls: ['./punto-de-venta.page.scss'],
 })
-export class PuntoDeVentaPage {
+export class PuntoDeVentaPage implements OnInit {
 
-  constructor() { }
   saleOptions = ['Venta', 'Cortesía', 'Merma'];
   selectedSaleOption: any = 'Venta';
-  mockInventaryData = [
-    {
-      productCode: "LIB31",
-      productName: "Libro competencia comunicativa",
-      stock: 32,
-      adquisicionPrice: 80,
-      sellingPrice: 200,
-      description: "Libro de competencia Comunicativa de la UANL",
-      category: "Libros"
-    },
-    {
-      productCode: "LIB41",
-      productName: "Libro Apreciacion de las artes",
-      stock: 32,
-      adquisicionPrice: 80,
-      sellingPrice: 200,
-      description: "Libro de Apreciacion de las artes de la UANL",
-      category: "Libros"
-    },
-    {
-      productCode: "TERM12",
-      productName: "Termo nutria FASPYN",
-      stock: 10,
-      adquisicionPrice: 120,
-      sellingPrice: 250,
-      description: "Termo de 600ml con la mascota de la FAPSYN",
-      category: "Souvenirs"
-    },
-    {
-      productCode: "LAP32",
-      productName: "Lápiz de #2",
-      stock: 180,
-      adquisicionPrice: 1.50,
-      sellingPrice: 6,
-      description: "Lápiz de grafito del #2 marca mirado",
-      category: "Útiles escolares"
-    },
-    {
-      productCode: "MAN76",
-      productName: "Manual de prácticas laboratorio",
-      stock: 300,
-      adquisicionPrice: 30,
-      sellingPrice: 60,
-      description: "Manual de prácticas para laboratorio de nutrición",
-      category: "Manuales"
-    },
-    {
-      productCode: "CUA31",
-      productName: "Cuaderno",
-      stock: 32,
-      adquisicionPrice: 15,
-      sellingPrice: 35,
-      description: "Cuaderno de 100 hojas",
-      category: "Material escolar"
-    },
-    {
-      productCode: "PLUM12",
-      productName: "Pluma",
-      stock: 32,
-      adquisicionPrice: .50 ,
-      sellingPrice: 10,
-      description: "Pluma de colores BIC",
-      category: "Material escolar"
-    },
-    {
-      productCode: "CAM32",
-      productName: "Camisa de generación",
-      stock: 45,
-      adquisicionPrice: 110,
-      sellingPrice: 250,
-      description: "Camisa de la generación XXII",
-      category: "Souvenirs"
-    },
-    {
-      productCode: "MEDPH12",
-      productName: "Medidor de PH",
-      stock: 32,
-      adquisicionPrice: 80,
-      sellingPrice: 120,
-      description: "Instrumento para medir pH",
-      category: "Material escolar"
-    },
-  ]
 
   saleTableHeaders = ['Nombre del producto', 'Unidades', 'Precio de venta', 'Subtotal', 'Eliminar'];
   inventaryTableHeaders = ['Código','Nombre del producto', 'Precio de venta', 'Seleccionar'];
   addProductTableHeaders = ['Producto', 'Código', 'Unidades', ''];
-
   filterItems: any = '';
-  itemsIncludedInSale:any = [];
+  itemsIncludedInSale: any = [];
+  productsAvailableForSale: any;
+  dataLoaded: boolean;
+  constructor(public posService: POSService) { }
+
+  async ngOnInit(): Promise<void> {
+      this.productsAvailableForSale = await this.posService.getProductsForSale();
+      this.dataLoaded = true;
+    }
 
   deleteItemFromSale(itemName){
-    this.itemsIncludedInSale = this.itemsIncludedInSale.filter((item) => item.productName != itemName);
+    this.itemsIncludedInSale = this.itemsIncludedInSale.filter((item) => item.product_name !== itemName);
   }
 
   saleCompleted: any;
@@ -131,28 +55,28 @@ export class PuntoDeVentaPage {
     ventana.document.write('</body></html>');
     ventana.document.close();
     ventana.focus();
-    ventana.onload = function() {
+    ventana.onload = () => {
       ventana.print();
       ventana.close();
     };
     return true;
   }
-  
+
   addProductToSale(selectedItem){
     this.itemsIncludedInSale.push({
-      productName: this.selectedItem.productName,
+      product_name: this.selectedItem.product_name,
       unites: this.selectedItemUnits,
-      sellingPrice: this.selectedItem.sellingPrice,
-      subtotal: this.selectedItemUnits * this.selectedItem.sellingPrice,
+      sellingPrice: this.selectedItem.product_sellingprice,
+      subtotal: this.selectedItemUnits * this.selectedItem.product_sellingprice,
     });
   }
 
   cashReceivment: any;
   getCashback(){
-    let cashBack = this.saleTotal()- this.cashReceivment
+    let cashBack = this.saleTotal()- this.cashReceivment;
     if (isNaN(cashBack)){
       return 0;
-    } 
+    };
     if (this.cashReceivment < this.saleTotal()){
       return '';
     }
@@ -170,9 +94,9 @@ export class PuntoDeVentaPage {
   selectedItem:any = {};
   selectedItemUnits: any = 0;
   selectProduct(selectedProduct){
-    this.selectedItem.productName = selectedProduct.productName;
+    this.selectedItem.product_name = selectedProduct.product_name;
     this.selectedItem.productCode = selectedProduct.productCode;
-    this.selectedItem.sellingPrice = selectedProduct.sellingPrice;
+    this.selectedItem.product_sellingprice = selectedProduct.product_sellingprice;
   }
 
   ionViewDidLoad() {

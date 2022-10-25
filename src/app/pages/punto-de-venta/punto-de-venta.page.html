@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content *ngIf="dataLoaded">
   <div class="generalContainer">
     <div class="productSearchAndTabContainer">
       <h3>Venta</h3>
@@ -20,7 +20,7 @@
         </ion-input>
         <ion-icon name="search"></ion-icon>
       </div>
-      <table class="addProductTable" *ngIf="selectedItem.productName">
+      <table class="addProductTable" *ngIf="selectedItem.product_name">
         <tr>
           <td class="headers" *ngFor="let header of addProductTableHeaders">
             {{header}}
@@ -28,10 +28,10 @@
         </tr>
         <tr>
           <td>
-            {{selectedItem.productName}}
+            {{selectedItem.product_name}}
           </td>
           <td>
-            {{selectedItem.productCode}}
+            {{selectedItem.product_id}}
           </td>
           <td>
             <ion-input style="margin: 0;"  placeholer="Cantidad" [(ngModel)]="selectedItemUnits" type="numeric">
@@ -52,7 +52,7 @@
         </tr>
         <tr *ngFor="let saleItem of itemsIncludedInSale">
           <td>
-            {{saleItem.productName}}
+            {{saleItem.product_name}}
           </td>
           <td>
             {{saleItem.unites}}
@@ -65,7 +65,7 @@
           </td>
           <td>
             <ng-container>
-              <ion-icon name="trash" (click)="deleteItemFromSale(saleItem.productName)" color="danger"></ion-icon>
+              <ion-icon name="trash" (click)="deleteItemFromSale(saleItem.product_name)" color="danger"></ion-icon>
             </ng-container>
           </td>
         </tr>
@@ -96,10 +96,10 @@
         <ion-row>
           <ion-col>Tipo venta</ion-col>
           <ion-col>
-            <ion-select [placeholder]="selectedSaleOption" [(ngModel)]="selectedSaleOption">
-              <ion-option *ngFor="let option of saleOptions" [value]="option">
+            <ion-select interface="popover" [placeholder]="selectedSaleOption" [(ngModel)]="selectedSaleOption">
+              <ion-select-option *ngFor="let option of saleOptions" [value]="option">
                 {{option}}
-              </ion-option>
+              </ion-select-option>
             </ion-select>
           </ion-col>
         </ion-row>
@@ -122,19 +122,19 @@
           </td>
         </tr>
         <tr 
-          *ngFor="let item of mockInventaryData">
+          *ngFor="let product of productsAvailableForSale">
           <td>
-            {{item.productCode}}
+            {{product.product_id}}
           </td>
           <td>
-            {{item.productName}}
+            {{product.product_name}}
           </td>
           <td>
-            ${{item.sellingPrice}}
+            ${{product.product_sellingprice}}
           </td>
           <td>
             <ng-container>
-              <ion-icon name="checkmark-circle-outline" color="primary" (click)="selectProduct(item)"></ion-icon>
+              <ion-icon name="checkmark-circle-outline" color="primary" (click)="selectProduct(product)"></ion-icon>
             </ng-container>
           </td>
         </tr>
@@ -153,7 +153,7 @@
           <tbody>
             <tr *ngFor="let saleItem of saleCompleted.items">
               <td>
-                {{saleItem.productName}}
+                {{saleItem.product_name}}
               </td>
               <td>
                 {{saleItem.unites}}

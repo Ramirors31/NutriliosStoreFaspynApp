@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 /* eslint-disable arrow-body-style */
 /* eslint-disable @typescript-eslint/quotes */
 /* eslint-disable object-shorthand */
@@ -8,6 +9,7 @@ import { AlertController } from '@ionic/angular';
 import { EditRegisterProductModalComponent } from 'src/app/components/edit-register-product-modal/edit-register-product-modal.component';
 import { Product } from 'src/models/Product';
 import { DatabaseService } from 'src/services/database.service';
+import { InventaryService } from 'src/services/inventary.service';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -26,15 +28,24 @@ export class InventarioActualPage implements OnInit {
     public modalController: ModalController,
     public alertController: AlertController,
     public databaseService: DatabaseService,
+    public inventaryService: InventaryService,
     ) {
   }
 
   async ngOnInit() {
-      this.registeredProducts = await this.databaseService.getInventaryData();
+      this.registeredProducts = await this.databaseService.readTableData('products');
     }
 
   searchProduct(){
     console.log('buscando producto we');
+  }
+
+  closeProductRegisterModal() {
+    this.showEditRegisterModal.dismiss();
+  }
+
+  addProductFn(addedProduct) {
+    this.registeredProducts.push(addedProduct);
   }
 
   showEditRegisterModal: any;
@@ -42,17 +53,27 @@ export class InventarioActualPage implements OnInit {
     if (itemToEdit) {
       this.seletecItemToEdit = itemToEdit;
     }
-    const modal = await this.modalController.create({
+    let modalContainer: any = {};
+    this.showEditRegisterModal = await this.modalController.create({
       component: EditRegisterProductModalComponent,
       componentProps: {
         opType: opType,
-        itemToEdit: itemToEdit,
+        itemToEdit,
+        modalContainer,
+        saveEditProductModalFn: this.saveEditProductModalFn.bind(this),
+        closeModalFn: this.closeProductRegisterModal.bind(this),
+        addProductFn: this.addProductFn.bind(this),
       }
     });
-    return await modal.present();
+    return await this.showEditRegisterModal.present();
   }
 
   filterItems: any = '';
+  saveEditProductModalFn(productID, productData) {
+    const editedProductIndex = this.registeredProducts.findIndex((product) => product.product_id === productID);
+    this.registeredProducts[editedProductIndex] = productData;
+    console.log(editedProductIndex);
+  }
 
   closeModal($event) {
     this.showEditRegisterModal = $event;
@@ -66,19 +87,20 @@ export class InventarioActualPage implements OnInit {
     this.registeredProducts.push($event);
   };
 
-  async deleteItem(itemCode: string) {
+  async deleteItem(productID: string, productName: string) {
     const alert = await this.alertController.create({
-      message: `Está a punto de eliminar ${itemCode} del inventario, ¿Desea continuar?`,
+      message: `Está a punto de eliminar ${productName} del inventario, ¿Desea continuar?`,
       buttons: [
         {
         text: 'Confirmar',
         handler: () => {
-          this.registeredProducts = this.registeredProducts.filter((item) => item.productName !== itemCode);
+          this.deleteInventaryItem(productID);
+          // this.registeredProducts = this.registeredProducts.filter((item) => item.product_id !== productID);
         }
-        },
-        {
-          text: 'Cancelar',
-          role: 'cancel',
+      },
+      {
+        text: 'Cancelar',
+        role: 'cancel',
           handler: () => {
             return;
           }
@@ -88,6 +110,13 @@ export class InventarioActualPage implements OnInit {
     await alert.present();
   }
 
+  deleteInventaryItem(productID) {
+  const deleteProductResponse = this.inventaryService.deleteInventaryProduct(productID);
+  if (deleteProductResponse) {
+    const deletedProductIndex = this.registeredProducts.findIndex((product) => product.product_id === productID);
+    this.registeredProducts.splice(deletedProductIndex, 1);
+  }
+  }
   showProductEntriesModal: any;
   displayProductEntriesModal() {
     this.showProductEntriesModal = true;

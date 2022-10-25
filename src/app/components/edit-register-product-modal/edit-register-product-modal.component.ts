@@ -1,5 +1,9 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable @typescript-eslint/quotes */
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { Product } from 'src/models/Product';
+import { DatabaseService } from 'src/services/database.service';
+import { InventaryService } from 'src/services/inventary.service';
 
 @Component({
   selector: 'app-edit-register-product-modal',
@@ -8,53 +12,62 @@ import { ModalController } from '@ionic/angular';
 })
 export class EditRegisterProductModalComponent implements OnInit {
 
-  productName:string;
-  productDescription:string;
-  productCategogy: string;
-  productInitialStock: number;
-  productMinimunRequired: number;
-  productPurchasePrice: number;
-  productSalePrice: number;
+  @Input() itemToEdit?: any;
+  @Input() closeModalFn: any;
+  @Input() addProductFn: any;
+  @Input() saveEditProductModalFn: any;
+  productData: Product = {
+    product_adquisitionprice: false,
+    product_category: false,
+    product_description: false,
+    product_id: false,
+    product_name : false,
+    product_sellingprice : false,
+    product_stock : false
+  };
+  text: string;
+  productCategories = ["Libros", "Material de laboratorio", "Manuales", "Material escolar", "Souvenirs", "Ropa"];
+
+  constructor(
+    public databaseService: DatabaseService,
+    public inventaryService: InventaryService,
+    ) {
+
+  }
 
   ngOnInit() {
     if (this.itemToEdit) {
-      this.productName = this.itemToEdit.productName
-      this. productDescription = this.itemToEdit.description;
-      this.productCategogy = this.itemToEdit.category;
-      this.productInitialStock = this.itemToEdit.stock;
-      this.productPurchasePrice = this.itemToEdit.adquisicionPrice;
-      this.productSalePrice = this.itemToEdit.sellingPrice;
+      this.productData = JSON.parse(JSON.stringify(this.itemToEdit));
     }
   }
-  text: string;
-  productCategories = ["Libros", "Material de laboratorio", "Manuales", "Material escolar", "Souvenirs", "Ropa"]
-  @Output() closeProductModal: EventEmitter<any> = new EventEmitter();
-  @Output() saveNewProduct: EventEmitter<any> = new EventEmitter();
-  @Input() itemToEdit: any;
 
-  constructor(private modalController: ModalController) {
-
+  async saveProduct(){
+      const newProductData: any = {
+        product_name: this.productData.product_name,
+        product_stock: this.productData.product_stock,
+        product_adquisitionprice: this.productData.product_adquisitionprice,
+        product_sellingprice: this.productData.product_sellingprice,
+        product_description: this.productData.product_description,
+        product_category: this.productData.product_category,
+      };
+      const addProductResponse = await this.databaseService.insertRecordToDB(newProductData, 'products');
+      if (addProductResponse.insertId) {
+        newProductData.product_id = addProductResponse.insertId;
+        this.addProductFn(newProductData);
+        this.closeModalFn();
+      }
   }
 
-  closeModal() {
-    this.modalController.dismiss();
+  async editProduct() {
+    const productID = JSON.parse(JSON.stringify(this.productData.product_id));
+    // eslint-disable-next-line prefer-const
+    let editData = this.productData;
+    const editProductResponse = await this.inventaryService.updateInventaryProduct(productID, editData);
+    if (editProductResponse) {
+      console.log('todobn');
+      this.saveEditProductModalFn(productID, editData);
+    } else {
+      console.log('todo mal');
+    }
   }
-
-  saveProduct(){
-    this.saveNewProduct.emit({
-      productCode: "SI134",
-      productName: this.productName,
-      stock: this.productInitialStock,
-      adquisicionPrice: this.productPurchasePrice,
-      sellingPrice: this.productSalePrice,
-      description: this.productDescription,
-      category: this.productCategogy,
-    });
-    this.closeProductModal.emit(false);
-  }
-
-  editProduct() {
-    
-  }
-
 }

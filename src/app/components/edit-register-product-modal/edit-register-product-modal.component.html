@@ -1,52 +1,68 @@
   <div style="display: flex; flex-direction:row; width:100%; justify-content: flex-end;">
-    <ion-button style="color: #f53d3d; font-size: 1.2em"(click)="closeModal()">
+    <ion-button
+    fill="clear" 
+    color="danger"
+    (click)="closeModalFn()">
       Cancelar
     </ion-button>
   </div>
-  <ion-title style="text-align:center">{{itemToEdit ? 'Editar producto' : 'Registrar producto nuevo'}}</ion-title>
+  <div style="display: flex; align-items:center; justify-content:center">
+    <h3 style="text-align:center">{{itemToEdit ? 'Editar producto' : 'Registrar producto nuevo'}}</h3>
+  </div>
   <ion-grid>
         <ion-row>
-          <ion-col>
-            <ion-input [(ngModel)]="productName" type="text" placeholder="Nombre del producto"></ion-input>
+          <ion-col *ngIf="itemToEdit" size="2">
+            <p class="productFieldLable">Nombre</p>
+          </ion-col>
+          <ion-col size="10">
+            <ion-input [(ngModel)]="productData.product_name" type="text" placeholder="Nombre del producto"></ion-input>
           </ion-col>
         </ion-row>
         <ion-row>
-          <ion-col>
-            <ion-input [(ngModel)]="productDescription" type="text" placeholder="Descripción"></ion-input>
+          <ion-col *ngIf="itemToEdit" size="2">
+            <p class="productFieldLable">Descripción</p>
+          </ion-col>
+          <ion-col size="10">
+            <ion-input [(ngModel)]="productData.product_description" type="text" placeholder="Descripción"></ion-input>
           </ion-col>
         </ion-row>
       <ion-row>
-        <ion-col>
-          <ion-select [(ngModel)]="productCategogy"  placeholder="Categoría">
-            <ion-option *ngFor="let productCategory of productCategories" [value]="productCategory">
+        <ion-col *ngIf="itemToEdit" size="2">
+          <p class="productFieldLable">Categoria</p>
+        </ion-col>
+        <ion-col size="10">
+          <ion-select interface="popover" [(ngModel)]="productData.product_category"  placeholder="Categoría">
+            <ion-select-option *ngFor="let productCategory of productCategories" [value]="productCategory">
               {{productCategory}}
-            </ion-option>
+            </ion-select-option>
           </ion-select>
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col>
-          <ion-input [(ngModel)]="productInitialStock"  placeholder="Stock inicial" type="numeric">
-          </ion-input>
+        <ion-col *ngIf="itemToEdit" size="2">
+          <p class="productFieldLable">Stock</p>
         </ion-col>
-        <ion-col *ngIf="!itemToEdit">
-          <ion-input [(ngModel)]="productMinimunRequired"  placeholder="Mínimo requerido" type="numeric">
+        <ion-col size="10">
+          <ion-input [(ngModel)]="productData.product_stock"  placeholder="Stock inicial" type="numeric">
           </ion-input>
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col>
-          <ion-input [(ngModel)]="productPurchasePrice" placeholder="Precio compra" type="numeric">
+        <ion-col *ngIf="itemToEdit" size="2">
+          <p class="productFieldLable">Precio compra/venta</p>
+        </ion-col>
+        <ion-col size="5">
+          <ion-input [(ngModel)]="productData.product_adquisitionprice" placeholder="Precio compra" type="numeric">
           </ion-input>
         </ion-col>
-        <ion-col>
-          <ion-input [(ngModel)]="productSalePrice"  placeholder="Precio venta" type="numeric">
+        <ion-col size="5">
+          <ion-input [(ngModel)]="productData.product_sellingprice"  placeholder="Precio venta" type="numeric">
           </ion-input>
         </ion-col>
       </ion-row>
       <ion-row style="text-align: center;">
         <ion-col>
-          <ion-button (click)="itemToEdit ? editProduct() :  saveProduct()" [disabled]="!productName || !productCategogy || !productDescription || !productInitialStock || !productSalePrice || !productPurchasePrice"> 
+          <ion-button (click)="itemToEdit ? editProduct() :  saveProduct()" [disabled]="!productData.product_name || !productData.product_category || !productData.product_description || !productData.product_stock || !productData.product_sellingprice || !productData.product_adquisitionprice"> 
           {{itemToEdit ? 'Guardar cambios' : 'Registrar producto'}}
           </ion-button>
         </ion-col>
