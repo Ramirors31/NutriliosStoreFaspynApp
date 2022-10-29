@@ -23,6 +23,10 @@ const routes: Routes = [
     path: 'punto-de-venta',
     loadChildren: () => import('./pages/punto-de-venta/punto-de-venta.module').then( m => m.PuntoDeVentaPageModule)
   },
+  {
+    path: 'salidas',
+    loadChildren: () => import('./pages/salidas/salidas.module').then( m => m.SalidasPageModule)
+  },
 ];
 
 @NgModule({

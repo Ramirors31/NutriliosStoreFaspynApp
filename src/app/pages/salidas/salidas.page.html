@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Salidas</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+    <div class="dataTableContainer">
+      <table>
+        <tr>
+          <td class="tableHeaders" *ngFor="let header of tableHeaders">
+            {{header}}  
+          </td>
+        </tr>
+        <tr *ngFor="let salida of salidasRegistradas">
+          <td>
+            {{salida.salida_id}}
+          </td>
+          <td>
+            {{salida.salida_fecha}}
+          </td>
+          <td>
+            {{salida.salida_responsable}}
+          </td>
+          <td>
+            ${{salida.salida_total}}
+          </td>
+          <td>
+            {{salida.salida_tipo}}
+          </td>
+          <td>
+            <ion-button (click)="openSalesDetails(salida)" [color]="salida.salida_tipo === 'Venta' ? 'primary' : 'warning'">
+              detalles
+            </ion-button>
+          </td>
+        </tr>
+      </table>
+    </div> 
+  <!-- <sale-details 
+    *ngIf="showSaleDetails"
+    (closeSalesDetailsModal)="closeSaleDetails($event)"
+    [saleData]="selectedSaleData">
+  </sale-details> -->
+</ion-content>

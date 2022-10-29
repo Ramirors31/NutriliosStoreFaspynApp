@@ -30,7 +30,8 @@ export class AuxFnsService {
       month: date.getMonth() + 1,
       year: date.getFullYear(),
       dayOfWeek: date.getDay(),
-      formatDate: `${date.getDate()}/${this.getStringMonth(date.getMonth())}/${date.getFullYear()}`
+      formatDate: `${date.getDate()}/${this.getStringMonth(date.getMonth())}/${date.getFullYear()}`,
+      dbFormatData: `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
     };
     return dateObj;
   }

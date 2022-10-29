@@ -10,7 +10,7 @@ export class AppComponent {
     { title: 'Cortes Administrativos', url: '/cortes-administrativos', icon: 'paper-plane' },
     { title: 'Punto de venta', url: '/punto-de-venta', icon: 'heart' },
     { title: 'Órdenes', url: '/folder/Archived', icon: 'archive' },
-    { title: 'Salidas', url: '/folder/Trash', icon: 'trash' },
+    { title: 'Salidas', url: '/salidas', icon: 'trash' },
     { title: 'Spam', url: '/folder/Spam', icon: 'warning' },
   ];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];

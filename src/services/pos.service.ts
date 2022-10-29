@@ -25,4 +25,13 @@ export class POSService {
       return false;
     }
   }
+
+  async completeSale(saleData) {
+    const insertResponse = await this.dbService.insertRecordToDB(saleData, 'salidas');
+    if (insertResponse) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

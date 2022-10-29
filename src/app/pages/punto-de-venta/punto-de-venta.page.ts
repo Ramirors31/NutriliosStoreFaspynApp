@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Component, OnInit } from '@angular/core';
 import { POSService } from 'src/services/pos.service';
 
@@ -31,23 +32,29 @@ export class PuntoDeVentaPage implements OnInit {
 
   saleCompleted: any;
   completeSale(){
-    let dateRef = new Date();
-    let saleObj = {
-      items: this.itemsIncludedInSale,
-      saleDate: `${dateRef.getDate()}/${dateRef.getMonth() + 1}/2022`,
-      saleHour: `${dateRef.getHours()}:${dateRef.getMinutes()}`,
-      seller: 'Usuario anónimo',
-      total: this.saleTotal(),
-      type: this.selectedSaleOption,
+    const dateRef = new Date();
+    const saleObj: any = {
+      salida_productos: JSON.stringify(this.itemsIncludedInSale),
+      salida_fecha: `${dateRef.getDate()}/${dateRef.getMonth() + 1}/2022`,
+      salida_responsable: 'Usuario anónimo',
+      salida_total: this.saleTotal().toString(),
+      salida_tipo: this.selectedSaleOption,
+    };
+    const completeSaleResponse = this.posService.completeSale(saleObj);
+    if (completeSaleResponse) {
+      console.log('Guardao al cien');
+    } else {
+      console.log('valiend0 madre compare');
     }
     this.saleCompleted = saleObj;
+    this.saleCompleted.salida_hora = `${dateRef.getHours()}:${dateRef.getMinutes()}`;
     const saleTicket = document.querySelector('.ticketDeCompra');
     this.printTicket(saleTicket);
     console.log(saleObj);
   }
 
   printTicket(elemento) {
-    let ventana = window.open('', 'PRINT', 'height=400,width=600');
+    const ventana = window.open('', 'PRINT', 'height=400,width=600');
     ventana.document.write('<html><head><title>' + document.title + '</title>');
     ventana.document.write('<link rel="stylesheet" href="ticket-de-compra.css">');
     ventana.document.write('</head><body >');
@@ -64,6 +71,7 @@ export class PuntoDeVentaPage implements OnInit {
 
   addProductToSale(selectedItem){
     this.itemsIncludedInSale.push({
+      product_id: selectedItem.product_id,
       product_name: this.selectedItem.product_name,
       unites: this.selectedItemUnits,
       sellingPrice: this.selectedItem.product_sellingprice,
@@ -95,7 +103,7 @@ export class PuntoDeVentaPage implements OnInit {
   selectedItemUnits: any = 0;
   selectProduct(selectedProduct){
     this.selectedItem.product_name = selectedProduct.product_name;
-    this.selectedItem.productCode = selectedProduct.productCode;
+    this.selectedItem.product_id = selectedProduct.product_id;
     this.selectedItem.product_sellingprice = selectedProduct.product_sellingprice;
   }
 
