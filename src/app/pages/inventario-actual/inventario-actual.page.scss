@@ -1,0 +1,47 @@
+
+.searchMenuInventario {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-items: center;
+    font-size: 1.2em;
+    justify-content: flex-end;
+    ion-icon{
+        font-size: 2em;
+        margin-right: 12px;
+    }
+    ion-input{
+        max-width: 280px;
+    }
+    margin-bottom: 20px;
+}
+
+.inventaryTableContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    text-align: center;
+    table{
+        min-width: 80%;
+        max-width: 80%;
+        border: 2px solid black;
+        .tableHeaders{
+            margin-left: 10px;
+            margin-right: 10px;
+            background-color: #32db64;
+            color: white
+        }
+        td{
+            padding: 5px;
+
+            ion-icon:first-child{
+                margin-right: 15px;
+            }
+        }
+        tr:nth-child(even){
+            background-color: #cacaca;
+
+        }
+    }
+}
+

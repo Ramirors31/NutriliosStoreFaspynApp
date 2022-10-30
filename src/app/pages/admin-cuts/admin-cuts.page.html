@@ -6,11 +6,10 @@
     <ion-title>Cortes administrativos</ion-title>
   </ion-toolbar>
 </ion-header>
-
 <ion-content>
   <ion-grid>
     <ion-row>
-      <ion-col size="6">
+      <ion-col size="8">
           <ion-text>
             <h3>
               {{getTodaysDate()}}
@@ -20,35 +19,111 @@
             <ion-text style="flex-basis: 50%;" color="danger">
               <h5>Corte pendiente</h5>
             </ion-text>
-            <ion-button style="margin-left: auto;">
+            <ion-button (click)="generateDailyCut()" style="margin-left: auto;">
               Generar corte diario
             </ion-button>
           </div>
+          <ion-content class="dataTableContainer">
+            <table>
+              <tr>
+                <td class="tableHeaders" *ngFor="let header of tableHeaders">
+                  {{header}}  
+                </td>
+              </tr>
+              <tr *ngFor="let salida of selectedDateSales">
+                <td>
+                  {{salida.salida_id}}
+                </td>
+                <td>
+                  {{salida.salida_fecha}}
+                </td>
+                <td>
+                  {{salida.salida_responsable}}
+                </td>
+                <td>
+                  ${{salida.salida_total}}
+                </td>
+                <td>
+                  {{salida.salida_tipo}}
+                </td>
+                <td>
+                  <ion-button (click)="openSalesDetails(salida)" [color]="salida.salida_tipo === 'Venta' ? 'primary' : 'warning'">
+                    detalles
+                  </ion-button>
+                </td>
+              </tr>
+            </table>
+          </ion-content>
+          <ion-accordion-group>
+            <ion-accordion value="ventas">
+              <ion-item slot="header">
+                Ventas
+              </ion-item>
+              <div slot="content">
+                <ion-grid *ngFor="let sale of selectedDateRealSales">
+                  <ion-row>
+                    <ion-col size="4">
+                      <ion-text>
+                        <h5>ID : {{sale.salida_id}}</h5>
+                      </ion-text>
+                    </ion-col>
+                    <ion-col size="4">
+                      <ion-text>
+                        <h5>
+                          Responsable: {{sale.salida_responsable}}
+                        </h5>
+                      </ion-text>
+                    </ion-col>
+                    <ion-col size="4">
+                      <ion-text>
+                        <h5>
+                          Total: {{sale.salida_total}}
+                        </h5>
+                      </ion-text>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row *ngFor="let product of getSaleProducts(sale.salida_productos)">
+                    <ion-col size="3">
+                      <ion-text>
+                        <h6>{{product.product_name}}</h6>
+                      </ion-text>
+                      <ion-text>
+                        <h6>{{product.unites}}</h6>
+                      </ion-text>
+                      <ion-text>
+                        <h6>{{product.subtotal}}</h6>
+                      </ion-text>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </div>
+            </ion-accordion>
+            <ion-accordion value="cortesias">
+              <ion-item slot="header">
+                Cortesias
+              </ion-item>
+              <ion-item slot="content">
+
+              </ion-item>
+            </ion-accordion>
+            <ion-accordion value="mermas">
+              <ion-item slot="header">
+                Mermas
+              </ion-item>
+              <ion-item slot="content">
+
+              </ion-item> 
+            </ion-accordion>
+          </ion-accordion-group>
       </ion-col>
-      <ion-col size="6">
-        <div style="display:flex; flex-direction: row; justify-content: center; align-items: center; width: 100%; padding: 10px 0px 0px 0px;" >
-          <ion-fab-button (click)="goBackWeek()">
-            <ion-icon name="chevron-back"></ion-icon>
-          </ion-fab-button>
-          <ion-text style="margin: 0px 20px 0px 20px;">
-            <h3>
-              {{displaySelectedDateMonth()}}
-            </h3>
-          </ion-text>
-          <ion-fab-button (click)="goForwardWeek()" [disabled]="selectedWeek.formatDate === liveWeek.formatDate">
-            <ion-icon name="chevron-forward"></ion-icon>
-          </ion-fab-button>
-        </div>
+      <ion-col size="4">
+          <ion-datetime presentation="date" display-format="DD.MM.YYYY HH:mm" (ionChange)="dateChange($event.detail.value)"></ion-datetime>
       </ion-col>
     </ion-row>
-    <ion-row>
-      <ion-col size="6">
+    <!-- <ion-row>
+      <ion-col size="8">
         <h1>Aqui ira el corte seleccionado, predeterminadamente si no hay corte seleccionado se muestra el corte del dia de hoy</h1>
       </ion-col>
-      <ion-col size="6">
-        <app-calendar [selectedWeek]="selectedWeek" [actualDate]="todayIs()" (calendarModeSwapEvent)="calendarModeSwap($event)">
-        </app-calendar>
-      </ion-col>
-    </ion-row>
+    </ion-row> -->
   </ion-grid>
 </ion-content>

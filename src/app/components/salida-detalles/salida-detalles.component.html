@@ -1,0 +1,41 @@
+  <div>
+    <div style="display: flex; flex-direction:row; width:100%; justify-content: flex-end;">
+      <ion-button fill="clear" style="color: #f53d3d; font-size: 1.2em"(click)="closeModal()">
+        Cerrar
+      </ion-button>
+    </div>
+    <h3  style="text-align: center;"> ID Venta: {{saleData.salida_id}}</h3>
+    <table class="saleTable">
+      <tr>
+        <td class="title">Total</td>
+        <td></td>
+        <td class="info"> ${{saleData.salida_total}}</td>
+      </tr>
+      <tr>
+        <td class="title">Vendedor</td>
+        <td></td>
+        <td class="info">{{saleData.salida_responsable}}</td>
+      </tr>
+      <tr>
+        <td class="title">Fecha</td>
+        <td></td>
+        <td class="info">{{saleData.salida_fecha}}</td>
+      </tr>
+      <tr>
+        <td class="title">
+          Productos
+        </td>
+      </tr>
+      <tr *ngFor="let saleItem of saleData.salida_productos">
+        <td>
+          {{saleItem.product_name}}
+        </td>
+        <td class="info">
+          {{saleItem.unites}}
+        </td>
+        <td class="info">
+          ${{saleItem.subtotal}}
+        </td>
+      </tr>
+    </table>
+  </div>

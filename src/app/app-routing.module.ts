@@ -4,7 +4,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'folder/Inbox',
+    redirectTo: 'inventario-actual',
     pathMatch: 'full'
   },
   // {
@@ -14,6 +14,18 @@ const routes: Routes = [
   {
     path: 'cortes-administrativos',
     loadChildren: () => import('./pages/admin-cuts/admin-cuts.module').then(m => m.AdminCutsPageModule)
+  },
+  {
+    path: 'inventario-actual',
+    loadChildren: () => import('./pages/inventario-actual/inventario-actual.module').then( m => m.InventarioActualPageModule),
+  },
+  {
+    path: 'punto-de-venta',
+    loadChildren: () => import('./pages/punto-de-venta/punto-de-venta.module').then( m => m.PuntoDeVentaPageModule)
+  },
+  {
+    path: 'salidas',
+    loadChildren: () => import('./pages/salidas/salidas.module').then( m => m.SalidasPageModule)
   },
 ];
 
