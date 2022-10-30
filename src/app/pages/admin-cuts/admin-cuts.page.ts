@@ -67,6 +67,7 @@ export class AdminCutsPage implements OnInit {
   }
 
   async dateChange(selectedDate) {
+    selectedDate = selectedDate.detail.value;
     const loading = await this.loadingController.create({
       message: 'Cargando',
       spinner: 'bubbles',
